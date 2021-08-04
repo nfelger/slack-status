@@ -16,12 +16,9 @@ async function loadTokens(userId) {
   return JSON.parse(tokensJson);
 }
 
-async function requestAuthorizationFromUser() {
-  const authorizeUrl = gcal.generateAuthorizeUrl();
-  await slack.postMessage({
-    channel: userId,
-    text: `Please (re-)authorize access to your Google Calendar here: ${authorizeUrl}`
-  });
+async function requestAuthorizationFromUser(userId) {
+  const authorizeUrl = gcal.generateAuthorizeUrl(userId);
+  await slack.postMessage(userId, `Please (re-)authorize access to your Google Calendar here: ${authorizeUrl}`);
 }
 
 const atWorkStatus = { emoji: ":wave:", text: "" };
@@ -71,7 +68,7 @@ const transitions = {
   }
   if (!tokens || !hasValidToken) {
     console.log("No token or token invalid. Asking user to (re-)authorize.");
-    await requestAuthorizationFromUser();
+    await requestAuthorizationFromUser(userId);
     console.log("Exiting.");
     process.exit(1);
   } else {

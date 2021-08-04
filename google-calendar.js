@@ -30,7 +30,7 @@ function getCurrentEvents(lookahead) {
   return events;
 }
 
-function generateAuthorizeUrl() {
+function generateAuthorizeUrl(userId) {
   const scopes = ["https://www.googleapis.com/auth/calendar.readonly"];
 
   return oauth2client.generateAuthUrl({
