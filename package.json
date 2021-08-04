@@ -1,0 +1,25 @@
+{
+  "name": "calstat",
+  "version": "1.0.0",
+  "description": "Sync your Slack status from your calendar",
+  "private": true,
+  "author": "niko.felger@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "sync": "node sync.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "web": "node ./bin/www"
+  },
+  "dependencies": {
+    "@slack/bolt": "^3.5.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "googleapis": "^83.0.0",
+    "http-errors": "~1.6.3",
+    "ioredis": "^4.27.6",
+    "jade": "~1.11.0",
+    "luxon": "^2.0.1",
+    "morgan": "~1.9.1"
+  }
+}
