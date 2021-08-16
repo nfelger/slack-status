@@ -26,13 +26,6 @@ async function requestAuthorizationFromUser(userId) {
   await redis.set(lastRequestedKey, DateTime.now().toISO());
 }
 
-const atWorkStatus = { emoji: ":wave:", text: "" };
-const offWorkStatus = { emoji: ":skateboard:", text: "currently off work" };
-
-function statusToTransitionKey(status) {
-  return `${status.emoji}${status.text}`;
-}
-
 async function getStatusFromCalendarEvents() {
   // Sync runs every 10min on Heroku, so peek ahead 5min.
   const events = await gcal.getCurrentEvents(5 * 60 * 1000);
@@ -53,6 +46,13 @@ function getStatusFromWorkingHours() {
   const now = DateTime.now();
 
   return (now >= start && now <= end) ? 'at-work' : 'off-work'
+}
+
+const atWorkStatus = { emoji: ":wave:", text: "" };
+const offWorkStatus = { emoji: ":skateboard:", text: "currently off work" };
+
+function statusToTransitionKey(status) {
+  return status.emoji;
 }
 
 const transitions = {
