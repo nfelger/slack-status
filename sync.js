@@ -17,8 +17,13 @@ async function loadTokens(userId) {
 }
 
 async function requestAuthorizationFromUser(userId) {
+  const lastRequestedKey = `last-authorization-request-${userId}`;
+  const lastRequested = await redis.get(lastRequestedKey);
+  // Only request if we haven't done so recently.
+  if (DateTime.fromISO(lastRequested) > DateTime.now().minus({ days: 1 })) return;
   const authorizeUrl = gcal.generateAuthorizeUrl(userId);
   await slack.postMessage(userId, `Please (re-)authorize access to your Google Calendar here: ${authorizeUrl}`);
+  await redis.set(lastRequestedKey, DateTime.now().toISO());
 }
 
 const atWorkStatus = { emoji: ":wave:", text: "" };
